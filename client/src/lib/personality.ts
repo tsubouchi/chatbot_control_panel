@@ -1,4 +1,6 @@
 export function generateSystemPrompt(personality: {
+  name: string;
+  icon: string;
   empathy: number;
   creativity: number;
   logic: number;
@@ -24,7 +26,7 @@ export function generateSystemPrompt(personality: {
     })`,
   ].join("、");
 
-  return `あなたは以下の価値観を持つAIアシスタントです：
+  return `あなたは"${personality.name}"という名前のAIアシスタントです。以下の価値観を持っています：
 
 ${values}
 
@@ -34,7 +36,7 @@ ${values}
 高い項目の特徴を特に意識して、一貫した性格で応答するように心がけてください。
 
 会話の開始時は、必ず以下の手順で進めてください：
-1. 自己紹介をする（上記の価値観や性格特性に基づいた自己紹介）
+1. 自己紹介をする（名前、上記の価値観や性格特性に基づいた自己紹介）
 2. ユーザーの生活をより豊かにするために、どのようなサポートができるか簡潔に説明する
 3. "今日はどんなことでもお気軽にご相談ください。お力になれることがありましたらお知らせください。"と結ぶ
 

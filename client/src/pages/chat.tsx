@@ -2,13 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import MessageList from "@/components/chat/message-list";
 import MessageInput from "@/components/chat/message-input";
 import SliderGroup from "@/components/personality/slider-group";
 import TextInputGroup from "@/components/personality/text-input-group";
 import PromptPreview from "@/components/personality/prompt-preview";
+import NameInput from "@/components/personality/name-input";
+import IconSelector from "@/components/personality/icon-selector";
 import { useSocket } from "@/lib/socket";
 import { useToast } from "@/hooks/use-toast";
 import { generateSystemPrompt } from "@/lib/personality";
@@ -28,6 +29,8 @@ export default function Chat() {
   const { toast } = useToast();
 
   const [personality, setPersonality] = useState({
+    name: "Sakuraアシスタント",
+    icon: "/icons/ai-1.png",
     empathy: 50,
     creativity: 50,
     logic: 50,
@@ -79,19 +82,27 @@ export default function Chat() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-6">
           <Card className="p-6">
-            <h2 className="text-2xl font-semibold mb-6">パーソナリティ設定</h2>
-            <Tabs defaultValue="sliders">
-              <TabsList className="mb-4">
-                <TabsTrigger value="sliders">主要な価値観</TabsTrigger>
-                <TabsTrigger value="traits">性格特性</TabsTrigger>
-              </TabsList>
-              <TabsContent value="sliders">
-                <SliderGroup value={personality} onChange={handlePersonalityChange} />
-              </TabsContent>
-              <TabsContent value="traits">
-                <TextInputGroup value={personality} onChange={handlePersonalityChange} />
-              </TabsContent>
-            </Tabs>
+            <h2 className="text-2xl font-semibold mb-6">基本設定</h2>
+            <div className="space-y-6">
+              <NameInput
+                value={personality.name}
+                onChange={(value) => handlePersonalityChange("name", value)}
+              />
+              <IconSelector
+                selectedIcon={personality.icon}
+                onSelect={(value) => handlePersonalityChange("icon", value)}
+              />
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <h2 className="text-2xl font-semibold mb-6">主要な価値観</h2>
+            <SliderGroup value={personality} onChange={handlePersonalityChange} />
+          </Card>
+
+          <Card className="p-6">
+            <h2 className="text-2xl font-semibold mb-6">性格特性</h2>
+            <TextInputGroup value={personality} onChange={handlePersonalityChange} />
           </Card>
 
           <Card className="p-6">
@@ -115,7 +126,12 @@ export default function Chat() {
           <h2 className="text-2xl font-semibold mb-6">チャット</h2>
           {isChatbotCreated ? (
             <div className="h-[600px] flex flex-col">
-              <MessageList messages={messages} isThinking={isThinking} />
+              <MessageList
+                messages={messages}
+                isThinking={isThinking}
+                botName={personality.name}
+                botIcon={personality.icon}
+              />
               <MessageInput onSend={handleSendMessage} disabled={isThinking} />
             </div>
           ) : (
