@@ -24,7 +24,7 @@ export default function MessageInput({ onSend, disabled }: Props) {
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type your message..."
+        placeholder="メッセージを入力..."
         disabled={disabled}
       />
       <Button type="submit" disabled={disabled || !message.trim()}>

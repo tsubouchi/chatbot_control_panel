@@ -13,11 +13,11 @@ type Props = {
 };
 
 const SLIDERS = [
-  { key: "empathy", label: "Empathy" },
-  { key: "creativity", label: "Creativity" },
-  { key: "logic", label: "Logic" },
-  { key: "curiosity", label: "Curiosity" },
-  { key: "confidence", label: "Confidence" },
+  { key: "empathy" as const, label: "平和と調和性" },
+  { key: "creativity" as const, label: "創造性" },
+  { key: "logic" as const, label: "論理的思考と正確性" },
+  { key: "curiosity" as const, label: "新規性" },
+  { key: "confidence" as const, label: "慎重さと安全性" },
 ] as const;
 
 export default function SliderGroup({ value, onChange }: Props) {

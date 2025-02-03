@@ -11,10 +11,10 @@ export default function PromptPreview({ prompt, onRegenerate }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="font-medium">System Prompt</h3>
+        <h3 className="font-medium">システムプロンプト</h3>
         <Button onClick={onRegenerate} variant="outline" size="sm">
           <RefreshCw className="h-4 w-4 mr-2" />
-          Regenerate
+          再生成
         </Button>
       </div>
       <ScrollArea className="h-[300px] w-full rounded-md border p-4">

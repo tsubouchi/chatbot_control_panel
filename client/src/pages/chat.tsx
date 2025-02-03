@@ -64,25 +64,25 @@ export default function Chat() {
   const handleRegeneratePrompt = async () => {
     await regeneratePrompt();
     toast({
-      title: "System prompt regenerated",
-      description: "The chatbot's personality has been updated.",
+      title: "システムプロンプトを再生成しました",
+      description: "チャットボットの性格が更新されました。",
     });
   };
 
   return (
-    <div className="container mx-auto p-4 min-h-screen">
+    <div className="container mx-auto p-4 min-h-screen bg-background">
       <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-        Personality Chat
+        AIアシスタントをカスタマイズ
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6">
-          <h2 className="text-2xl font-semibold mb-6">Personality Settings</h2>
+          <h2 className="text-2xl font-semibold mb-6">パーソナリティ設定</h2>
           <Tabs defaultValue="sliders">
             <TabsList className="mb-4">
-              <TabsTrigger value="sliders">Core Values</TabsTrigger>
-              <TabsTrigger value="traits">Traits</TabsTrigger>
-              <TabsTrigger value="preview">Preview</TabsTrigger>
+              <TabsTrigger value="sliders">主要な価値観</TabsTrigger>
+              <TabsTrigger value="traits">性格特性</TabsTrigger>
+              <TabsTrigger value="preview">プレビュー</TabsTrigger>
             </TabsList>
             <TabsContent value="sliders">
               <SliderGroup value={personality} onChange={handlePersonalityChange} />
@@ -100,7 +100,7 @@ export default function Chat() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-2xl font-semibold mb-6">Chat</h2>
+          <h2 className="text-2xl font-semibold mb-6">チャット</h2>
           <div className="h-[600px] flex flex-col">
             <MessageList messages={messages} isThinking={isThinking} />
             <MessageInput onSend={handleSendMessage} disabled={isThinking} />
