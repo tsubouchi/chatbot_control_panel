@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import MessageList from "@/components/chat/message-list";
 import MessageInput from "@/components/chat/message-input";
 import SliderGroup from "@/components/personality/slider-group";
@@ -76,34 +77,39 @@ export default function Chat() {
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6">
-          <h2 className="text-2xl font-semibold mb-6">パーソナリティ設定</h2>
-          <Tabs defaultValue="sliders">
-            <TabsList className="mb-4">
-              <TabsTrigger value="sliders">主要な価値観</TabsTrigger>
-              <TabsTrigger value="traits">性格特性</TabsTrigger>
-              <TabsTrigger value="preview">プレビュー</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sliders">
-              <SliderGroup value={personality} onChange={handlePersonalityChange} />
-            </TabsContent>
-            <TabsContent value="traits">
-              <TextInputGroup value={personality} onChange={handlePersonalityChange} />
-            </TabsContent>
-            <TabsContent value="preview">
-              <PromptPreview prompt={systemPrompt} />
-              {!isChatbotCreated && (
-                <Button 
-                  onClick={handleCreateChatbot} 
-                  className="w-full mt-4"
-                  variant="default"
-                >
-                  この性格でチャットボットを作成
-                </Button>
-              )}
-            </TabsContent>
-          </Tabs>
-        </Card>
+        <div className="space-y-6">
+          <Card className="p-6">
+            <h2 className="text-2xl font-semibold mb-6">パーソナリティ設定</h2>
+            <Tabs defaultValue="sliders">
+              <TabsList className="mb-4">
+                <TabsTrigger value="sliders">主要な価値観</TabsTrigger>
+                <TabsTrigger value="traits">性格特性</TabsTrigger>
+              </TabsList>
+              <TabsContent value="sliders">
+                <SliderGroup value={personality} onChange={handlePersonalityChange} />
+              </TabsContent>
+              <TabsContent value="traits">
+                <TextInputGroup value={personality} onChange={handlePersonalityChange} />
+              </TabsContent>
+            </Tabs>
+          </Card>
+
+          <Card className="p-6">
+            <h2 className="text-2xl font-semibold mb-6">システムプロンプト</h2>
+            <PromptPreview prompt={systemPrompt} />
+          </Card>
+
+          {!isChatbotCreated && (
+            <Button 
+              onClick={handleCreateChatbot} 
+              className="w-full"
+              size="lg"
+              variant="default"
+            >
+              この性格でチャットボットを作成
+            </Button>
+          )}
+        </div>
 
         <Card className="p-6">
           <h2 className="text-2xl font-semibold mb-6">チャット</h2>
