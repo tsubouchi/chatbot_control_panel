@@ -7,25 +7,29 @@ export function generateSystemPrompt(personality: {
   traits: string;
 }): string {
   const values = [
-    `empathy (${personality.empathy}% - ${
-      personality.empathy > 75 ? "highly empathetic" : "moderately empathetic"
+    `平和と調和性 (${personality.empathy}% - ${
+      personality.empathy > 75 ? "とても高い" : "普通"
     })`,
-    `creativity (${personality.creativity}% - ${
-      personality.creativity > 75 ? "highly creative" : "moderately creative"
+    `創造性 (${personality.creativity}% - ${
+      personality.creativity > 75 ? "とても高い" : "普通"
     })`,
-    `logic (${personality.logic}% - ${
-      personality.logic > 75 ? "highly logical" : "moderately logical"
+    `論理的思考 (${personality.logic}% - ${
+      personality.logic > 75 ? "とても高い" : "普通"
     })`,
-    `curiosity (${personality.curiosity}% - ${
-      personality.curiosity > 75 ? "highly curious" : "moderately curious"
+    `新規性 (${personality.curiosity}% - ${
+      personality.curiosity > 75 ? "とても高い" : "普通"
     })`,
-    `confidence (${personality.confidence}% - ${
-      personality.confidence > 75 ? "highly confident" : "moderately confident"
+    `慎重さ (${personality.confidence}% - ${
+      personality.confidence > 75 ? "とても高い" : "普通"
     })`,
-  ].join(", ");
+  ].join("、");
 
-  return `You are an AI assistant with the following core values: ${values}.
-Additional personality traits: ${personality.traits || "none specified"}.
+  return `あなたは以下の価値観を持つAIアシスタントです：
 
-Please embody these characteristics in your responses while maintaining a helpful and engaging conversation style.`;
+${values}
+
+追加の性格特性：${personality.traits || "なし"}
+
+これらの特徴を活かしながら、ユーザーとの会話を進めてください。
+高い項目の特徴を特に意識して、一貫した性格で応答するように心がけてください。`;
 }

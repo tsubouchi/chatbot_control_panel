@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MessageList from "@/components/chat/message-list";
 import MessageInput from "@/components/chat/message-input";
@@ -21,6 +22,7 @@ export type Message = {
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
+  const [isChatbotCreated, setIsChatbotCreated] = useState(false);
   const socket = useSocket();
   const { toast } = useToast();
 
@@ -33,13 +35,11 @@ export default function Chat() {
     traits: "",
   });
 
-  const { data: systemPrompt, refetch: regeneratePrompt } = useQuery({
-    queryKey: ["/api/prompt", personality],
-    enabled: false,
-  });
+  // リアルタイムでシステムプロンプトを生成
+  const systemPrompt = generateSystemPrompt(personality);
 
   const handleSendMessage = (content: string) => {
-    if (!socket) return;
+    if (!socket || !isChatbotCreated) return;
 
     const newMessage: Message = {
       id: Date.now().toString(),
@@ -61,11 +61,11 @@ export default function Chat() {
     setPersonality((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleRegeneratePrompt = async () => {
-    await regeneratePrompt();
+  const handleCreateChatbot = () => {
+    setIsChatbotCreated(true);
     toast({
-      title: "システムプロンプトを再生成しました",
-      description: "チャットボットの性格が更新されました。",
+      title: "チャットボットを作成しました",
+      description: "設定した性格でチャットを開始できます。",
     });
   };
 
@@ -91,20 +91,32 @@ export default function Chat() {
               <TextInputGroup value={personality} onChange={handlePersonalityChange} />
             </TabsContent>
             <TabsContent value="preview">
-              <PromptPreview
-                prompt={systemPrompt}
-                onRegenerate={handleRegeneratePrompt}
-              />
+              <PromptPreview prompt={systemPrompt} />
+              {!isChatbotCreated && (
+                <Button 
+                  onClick={handleCreateChatbot} 
+                  className="w-full mt-4"
+                  variant="default"
+                >
+                  この性格でチャットボットを作成
+                </Button>
+              )}
             </TabsContent>
           </Tabs>
         </Card>
 
         <Card className="p-6">
           <h2 className="text-2xl font-semibold mb-6">チャット</h2>
-          <div className="h-[600px] flex flex-col">
-            <MessageList messages={messages} isThinking={isThinking} />
-            <MessageInput onSend={handleSendMessage} disabled={isThinking} />
-          </div>
+          {isChatbotCreated ? (
+            <div className="h-[600px] flex flex-col">
+              <MessageList messages={messages} isThinking={isThinking} />
+              <MessageInput onSend={handleSendMessage} disabled={isThinking} />
+            </div>
+          ) : (
+            <div className="h-[600px] flex items-center justify-center text-muted-foreground">
+              プレビューで性格を確認し、チャットボットを作成してください
+            </div>
+          )}
         </Card>
       </div>
     </div>
